@@ -14,22 +14,20 @@ function readData() {
 const db = readData();
 
 console.log("==========================================================================");
-console.log(` 📊 CONSULTA DE ESTRUCTURA Y TABLA MARIADB / DATABASE: '${tableName.toUpperCase()}'`);
+console.log(` 📊 CONSULTA DE ESTRUCTURA MARIADB / TABLA: '${tableName.toUpperCase()}' (EXACTAMENTE 8 CAMPOS)`);
 console.log("==========================================================================");
 
 if (tableName === 'libros' || tableName === 'libro') {
-  console.log("\n📐 ESTRUCTURA DE LA TABLA (MARIADB DESCRIBE `libros`):");
+  console.log("\n📐 ESTRUCTURA OFICIAL EN MARIADB (DESCRIBE `libros` - 8 CAMPOS):");
   console.table([
     { Campo: 'id', Tipo: 'INT AUTO_INCREMENT', Clave: 'PRIMARY KEY', Nulo: 'NO' },
     { Campo: 'titulo', Tipo: 'VARCHAR(200)', Clave: '', Nulo: 'NO' },
     { Campo: 'autor', Tipo: 'VARCHAR(150)', Clave: '', Nulo: 'NO' },
+    { Campo: 'categoria', Tipo: 'VARCHAR(80)', Clave: '', Nulo: 'NO' },
     { Campo: 'isbn', Tipo: 'VARCHAR(50)', Clave: '', Nulo: 'YES' },
-    { Campo: 'categoria_id', Tipo: 'INT', Clave: 'FOREIGN KEY', Nulo: 'YES' },
-    { Campo: 'anio', Tipo: 'INT', Clave: '', Nulo: 'YES' },
     { Campo: 'ejemplares_totales', Tipo: 'INT', Clave: '', Nulo: 'NO' },
     { Campo: 'ejemplares_disponibles', Tipo: 'INT', Clave: '', Nulo: 'NO' },
-    { Campo: 'ubicacion', Tipo: 'VARCHAR(100)', Clave: '', Nulo: 'YES' },
-    { Campo: 'descripcion', Tipo: 'TEXT', Clave: '', Nulo: 'YES' }
+    { Campo: 'ubicacion', Tipo: 'VARCHAR(100)', Clave: '', Nulo: 'YES' }
   ]);
 
   if (db && db.books) {
@@ -39,13 +37,14 @@ if (tableName === 'libros' || tableName === 'libro') {
       Título: b.titulo,
       Autor: b.autor,
       Categoría: b.categoria,
+      ISBN: b.isbn || 'N/A',
       Disponibles: `${b.ejemplaresDisponibles}/${b.ejemplaresTotales}`,
       Ubicación: b.ubicacion
     })));
   }
 
 } else if (tableName === 'usuarios' || tableName === 'usuario') {
-  console.log("\n📐 ESTRUCTURA DE LA TABLA (MARIADB DESCRIBE `usuarios`):");
+  console.log("\n📐 ESTRUCTURA OFICIAL EN MARIADB (DESCRIBE `usuarios` - 8 CAMPOS):");
   console.table([
     { Campo: 'id', Tipo: 'INT AUTO_INCREMENT', Clave: 'PRIMARY KEY', Nulo: 'NO' },
     { Campo: 'nombre', Tipo: 'VARCHAR(100)', Clave: '', Nulo: 'NO' },
@@ -53,8 +52,8 @@ if (tableName === 'libros' || tableName === 'libro') {
     { Campo: 'email', Tipo: 'VARCHAR(150)', Clave: 'UNIQUE (LOGIN)', Nulo: 'NO' },
     { Campo: 'usuario', Tipo: 'VARCHAR(50)', Clave: 'UNIQUE', Nulo: 'NO' },
     { Campo: 'password', Tipo: 'VARCHAR(255)', Clave: '', Nulo: 'NO' },
-    { Campo: 'rol', Tipo: "ENUM('Admin', 'Lector')", Clave: '', Nulo: 'NO' },
-    { Campo: 'fecha_registro', Tipo: 'DATE', Clave: '', Nulo: 'NO' }
+    { Campo: 'rol', Tipo: "ENUM('Administrador', 'Lector')", Clave: '', Nulo: 'NO' },
+    { Campo: 'telefono', Tipo: 'VARCHAR(30)', Clave: '', Nulo: 'YES' }
   ]);
 
   if (db && db.users) {
@@ -65,16 +64,16 @@ if (tableName === 'libros' || tableName === 'libro') {
       Correo_Email: u.email,
       Usuario: u.usuario,
       Rol: u.rol,
-      Fecha: u.fechaRegistro
+      Teléfono: u.telefono || 'N/A'
     })));
   }
 
 } else if (tableName === 'prestamos' || tableName === 'prestamo') {
-  console.log("\n📐 ESTRUCTURA DE LA TABLA (MARIADB DESCRIBE `prestamos`):");
+  console.log("\n📐 ESTRUCTURA OFICIAL EN MARIADB (DESCRIBE `prestamos` - 8 CAMPOS):");
   console.table([
     { Campo: 'id', Tipo: 'INT AUTO_INCREMENT', Clave: 'PRIMARY KEY', Nulo: 'NO' },
-    { Campo: 'libro_id', Tipo: 'INT', Clave: 'FK -> libros.id', Nulo: 'NO' },
-    { Campo: 'usuario_id', Tipo: 'INT', Clave: 'FK -> usuarios.id', Nulo: 'NO' },
+    { Campo: 'libro_id', Tipo: 'INT', Clave: 'FOREIGN KEY', Nulo: 'NO' },
+    { Campo: 'usuario_id', Tipo: 'INT', Clave: 'FOREIGN KEY', Nulo: 'NO' },
     { Campo: 'fecha_prestamo', Tipo: 'DATE', Clave: '', Nulo: 'NO' },
     { Campo: 'fecha_devolucion_estimada', Tipo: 'DATE', Clave: '', Nulo: 'NO' },
     { Campo: 'fecha_devolucion_real', Tipo: 'DATE', Clave: '', Nulo: 'YES' },
@@ -95,8 +94,10 @@ if (tableName === 'libros' || tableName === 'libro') {
   }
 
 } else {
-  console.log("Tablas disponibles: libros, usuarios, prestamos");
-  console.log("Ejemplo: node ver_tabla.js libros");
+  console.log("Tablas disponibles (cada una con exactamente 8 campos):");
+  console.log(" - libros");
+  console.log(" - usuarios");
+  console.log(" - prestamos");
 }
 
 console.log("==========================================================================");
