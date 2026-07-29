@@ -2,8 +2,8 @@
 /**
  * conexion_mariadb.php
  * Conexión a MariaDB / MySQL con esquema oficial:
- * - USUARIOS: 8 campos
- * - LIBROS: 8 campos
+ * - USUARIOS: 7 campos exactos
+ * - LIBROS: 8 campos exactos
  * - PRESTAMOS: 6 campos exactos
  */
 
@@ -35,21 +35,20 @@ try {
 }
 
 function crearEstructuraTablasMariaDB($pdo) {
-    // 1. Tabla USUARIOS (8 campos)
+    // 1. Tabla USUARIOS (7 campos exactos)
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS `usuarios` (
             `id` INT AUTO_INCREMENT PRIMARY KEY,
+            `email` VARCHAR(150) NOT NULL UNIQUE,
             `nombre` VARCHAR(100) NOT NULL,
             `apellido` VARCHAR(100) NOT NULL,
-            `email` VARCHAR(150) NOT NULL UNIQUE,
-            `usuario` VARCHAR(50) NOT NULL UNIQUE,
             `password` VARCHAR(255) NOT NULL,
             `rol` ENUM('Administrador', 'Lector') DEFAULT 'Lector',
             `telefono` VARCHAR(30) NULL
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
     ");
 
-    // 2. Tabla LIBROS (8 campos)
+    // 2. Tabla LIBROS (8 campos exactos)
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS `libros` (
             `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -81,8 +80,8 @@ function crearEstructuraTablasMariaDB($pdo) {
     $checkUser = $pdo->query("SELECT COUNT(*) FROM `usuarios`")->fetchColumn();
     if ($checkUser == 0) {
         $passHash = password_hash('123', PASSWORD_DEFAULT);
-        $pdo->exec("INSERT INTO `usuarios` (`nombre`, `apellido`, `email`, `usuario`, `password`, `rol`, `telefono`) 
-            VALUES ('Administrador', 'Principal', 'admin@biblioteca.com', 'admin', '$passHash', 'Administrador', '555-0100');");
+        $pdo->exec("INSERT INTO `usuarios` (`email`, `nombre`, `apellido`, `password`, `rol`, `telefono`) 
+            VALUES ('admin@biblioteca.com', 'Administrador', 'Principal', '$passHash', 'Administrador', '555-0100');");
     }
 
     $checkBooks = $pdo->query("SELECT COUNT(*) FROM `libros`")->fetchColumn();

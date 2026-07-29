@@ -265,10 +265,10 @@ function renderUsers() {
     <tr>
       <td><strong>${u.nombre} ${u.apellido}</strong></td>
       <td><span class="badge badge-info"><i class="fa-solid fa-envelope"></i> ${u.email}</span></td>
-      <td><code>@${u.usuario}</code></td>
+      <td><code>@${u.usuario || u.email.split('@')[0]}</code></td>
       <td>${u.telefono || 'N/A'}</td>
       <td><span class="badge ${u.rol === 'Administrador' ? 'badge-warning' : 'badge-info'}">${u.rol}</span></td>
-      <td>${u.fechaRegistro}</td>
+      <td>${u.fechaRegistro || '2026-07-29'}</td>
     </tr>
   `).join('');
 }
@@ -375,21 +375,20 @@ function renderDiagram() {
       </svg>
     `;
   } else if (state.activeDiagram === 'erd') {
-    titleEl.textContent = 'Diagrama Entidad-Relación (ERD) - 8 Campos Usuarios/Libros | 6 Campos Préstamos';
+    titleEl.textContent = 'Diagrama Entidad-Relación (ERD) - 7 Campos Usuarios | 6 Campos Préstamos | 8 Campos Libros';
     viewport.innerHTML = `
       <svg width="880" height="430" viewBox="0 0 880 430" style="background:#181d28; border-radius:12px;">
-        <!-- Entity 1: USUARIOS (8) -->
-        <rect x="30" y="40" width="240" height="340" rx="8" fill="#11151e" stroke="#ff5a00" stroke-width="2"/>
+        <!-- Entity 1: USUARIOS (7 CAMPOS EXACTOS) -->
+        <rect x="30" y="40" width="240" height="310" rx="8" fill="#11151e" stroke="#ff5a00" stroke-width="2"/>
         <rect x="30" y="40" width="240" height="40" rx="8" fill="#ff5a00"/>
-        <text x="95" y="65" fill="#ffffff" font-size="15" font-weight="bold">USUARIOS (8)</text>
+        <text x="95" y="65" fill="#ffffff" font-size="15" font-weight="bold">USUARIOS (7)</text>
         <text x="45" y="110" fill="#ffffff" font-size="12">1. 🔑 id (PK)</text>
-        <text x="45" y="140" fill="#00a3e0" font-size="12">2. ✉️ email (LOGIN)</text>
-        <text x="45" y="170" fill="#ffffff" font-size="12">3. 👤 nombre</text>
-        <text x="45" y="200" fill="#ffffff" font-size="12">4. 👤 apellido</text>
-        <text x="45" y="230" fill="#ffffff" font-size="12">5. 🆔 usuario</text>
-        <text x="45" y="260" fill="#ffffff" font-size="12">6. 🔒 password</text>
-        <text x="45" y="290" fill="#ffffff" font-size="12">7. 🛡️ rol (Admin/Lector)</text>
-        <text x="45" y="320" fill="#ffffff" font-size="12">8. 📞 telefono</text>
+        <text x="45" y="145" fill="#00a3e0" font-size="12">2. ✉️ email (LOGIN)</text>
+        <text x="45" y="180" fill="#ffffff" font-size="12">3. 👤 nombre</text>
+        <text x="45" y="215" fill="#ffffff" font-size="12">4. 👤 apellido</text>
+        <text x="45" y="250" fill="#ffffff" font-size="12">5. 🔒 password</text>
+        <text x="45" y="285" fill="#ffffff" font-size="12">6. 🛡️ rol (Admin/Lector)</text>
+        <text x="45" y="320" fill="#ffffff" font-size="12">7. 📞 telefono</text>
 
         <!-- Entity 2: PRESTAMOS (6 CAMPOS EXACTOS) -->
         <rect x="320" y="40" width="240" height="280" rx="8" fill="#11151e" stroke="#00a3e0" stroke-width="2"/>
@@ -402,7 +401,7 @@ function renderDiagram() {
         <text x="335" y="250" fill="#ffffff" font-size="12">5. ⏱️ fechaDevolucion</text>
         <text x="335" y="285" fill="#ffffff" font-size="12">6. 🏷️ estado (Activo/Devuelto)</text>
 
-        <!-- Entity 3: LIBROS (8) -->
+        <!-- Entity 3: LIBROS (8 CAMPOS EXACTOS) -->
         <rect x="610" y="40" width="240" height="340" rx="8" fill="#11151e" stroke="#10b981" stroke-width="2"/>
         <rect x="610" y="40" width="240" height="40" rx="8" fill="#10b981"/>
         <text x="680" y="65" fill="#ffffff" font-size="15" font-weight="bold">LIBROS (8)</text>

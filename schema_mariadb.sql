@@ -9,19 +9,18 @@ COLLATE utf8mb4_spanish_ci;
 
 USE `mi_biblioteca`;
 
--- 1. Tabla USUARIOS (8 campos)
+-- 1. Tabla USUARIOS (Exactamente 7 campos)
 CREATE TABLE IF NOT EXISTS `usuarios` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `email` VARCHAR(150) NOT NULL UNIQUE,
   `nombre` VARCHAR(100) NOT NULL,
   `apellido` VARCHAR(100) NOT NULL,
-  `email` VARCHAR(150) NOT NULL UNIQUE,
-  `usuario` VARCHAR(50) NOT NULL UNIQUE,
   `password` VARCHAR(255) NOT NULL,
   `rol` ENUM('Administrador', 'Lector') DEFAULT 'Lector',
   `telefono` VARCHAR(30) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
--- 2. Tabla LIBROS (8 campos)
+-- 2. Tabla LIBROS (Exactamente 8 campos)
 CREATE TABLE IF NOT EXISTS `libros` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `titulo` VARCHAR(200) NOT NULL,
@@ -45,10 +44,10 @@ CREATE TABLE IF NOT EXISTS `prestamos` (
   CONSTRAINT `fk_prestamo_libro` FOREIGN KEY (`libro_id`) REFERENCES `libros`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
--- REGISTROS INICIALES DE DEMOSTRACIÓN
-INSERT INTO `usuarios` (`id`, `nombre`, `apellido`, `email`, `usuario`, `password`, `rol`, `telefono`) VALUES 
-(1, 'Administrador', 'Principal', 'admin@biblioteca.com', 'admin', '123', 'Administrador', '555-0100'),
-(2, 'María', 'González', 'maria.g@gmail.com', 'maria.g', '123', 'Lector', '555-0199');
+-- REGISTROS INICIALES
+INSERT INTO `usuarios` (`id`, `email`, `nombre`, `apellido`, `password`, `rol`, `telefono`) VALUES 
+(1, 'admin@biblioteca.com', 'Administrador', 'Principal', '123', 'Administrador', '555-0100'),
+(2, 'maria.g@gmail.com', 'María', 'González', '123', 'Lector', '555-0199');
 
 INSERT INTO `libros` (`id`, `titulo`, `autor`, `categoria`, `isbn`, `ejemplares_totales`, `ejemplares_disponibles`, `ubicacion`) VALUES 
 (1, 'Cien Años de Soledad', 'Gabriel García Márquez', 'Novela', '978-0307474728', 5, 4, 'Estante A-12'),

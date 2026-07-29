@@ -44,13 +44,12 @@ if (tableName === 'libros' || tableName === 'libro') {
   }
 
 } else if (tableName === 'usuarios' || tableName === 'usuario') {
-  console.log("\n📐 ESTRUCTURA OFICIAL EN MARIADB (DESCRIBE `usuarios` - 8 CAMPOS):");
+  console.log("\n📐 ESTRUCTURA OFICIAL EN MARIADB (DESCRIBE `usuarios` - EXACTAMENTE 7 CAMPOS):");
   console.table([
     { Campo: 'id', Tipo: 'INT AUTO_INCREMENT', Clave: 'PRIMARY KEY', Nulo: 'NO' },
+    { Campo: 'email', Tipo: 'VARCHAR(150)', Clave: 'UNIQUE (LOGIN)', Nulo: 'NO' },
     { Campo: 'nombre', Tipo: 'VARCHAR(100)', Clave: '', Nulo: 'NO' },
     { Campo: 'apellido', Tipo: 'VARCHAR(100)', Clave: '', Nulo: 'NO' },
-    { Campo: 'email', Tipo: 'VARCHAR(150)', Clave: 'UNIQUE (LOGIN)', Nulo: 'NO' },
-    { Campo: 'usuario', Tipo: 'VARCHAR(50)', Clave: 'UNIQUE', Nulo: 'NO' },
     { Campo: 'password', Tipo: 'VARCHAR(255)', Clave: '', Nulo: 'NO' },
     { Campo: 'rol', Tipo: "ENUM('Administrador', 'Lector')", Clave: '', Nulo: 'NO' },
     { Campo: 'telefono', Tipo: 'VARCHAR(30)', Clave: '', Nulo: 'YES' }
@@ -60,9 +59,9 @@ if (tableName === 'libros' || tableName === 'libro') {
     console.log("\n👥 REGISTROS ACTUALES GUARDADOS (SELECT * FROM `usuarios`):");
     console.table(db.users.map(u => ({
       ID: u.id,
-      Nombre: `${u.nombre} ${u.apellido}`,
       Correo_Email: u.email,
-      Usuario: u.usuario,
+      Nombre: u.nombre,
+      Apellido: u.apellido,
       Rol: u.rol,
       Teléfono: u.telefono || 'N/A'
     })));
@@ -94,7 +93,7 @@ if (tableName === 'libros' || tableName === 'libro') {
 } else {
   console.log("Tablas disponibles:");
   console.log(" - libros (8 campos)");
-  console.log(" - usuarios (8 campos)");
+  console.log(" - usuarios (7 campos exactos)");
   console.log(" - prestamos (6 campos exactos)");
 }
 
