@@ -7,7 +7,7 @@ let state = {
   stats: {},
   currentTab: 'dashboard',
   viewMode: 'grid',
-  activeDiagram: 'usecase',
+  activeDiagram: 'erd',
   zoomLevel: 1.0
 };
 
@@ -192,7 +192,7 @@ function filterAndRenderCatalog(query = '') {
   const q = query.toLowerCase().trim();
 
   const filtered = state.books.filter(b => {
-    const matchQuery = !q || b.titulo.toLowerCase().includes(q) || b.autor.toLowerCase().includes(q) || b.isbn.includes(q);
+    const matchQuery = !q || b.titulo.toLowerCase().includes(q) || b.autor.toLowerCase().includes(q) || (b.isbn && b.isbn.includes(q));
     const matchCategory = categoryFilter === 'ALL' || b.categoria === categoryFilter;
     const matchAvail = availFilter === 'ALL' || 
       (availFilter === 'DISPONIBLE' && b.ejemplaresDisponibles > 0) ||
@@ -233,7 +233,7 @@ function filterAndRenderCatalog(query = '') {
       <td><strong>${b.titulo}</strong></td>
       <td>${b.autor}</td>
       <td><span class="badge badge-info">${b.categoria}</span></td>
-      <td><code>${b.isbn}</code></td>
+      <td><code>${b.isbn || 'N/A'}</code></td>
       <td><span class="badge ${b.ejemplaresDisponibles > 0 ? 'badge-success' : 'badge-danger'}">${b.ejemplaresDisponibles}/${b.ejemplaresTotales}</span></td>
       <td>${b.ubicacion}</td>
       <td>
@@ -325,11 +325,9 @@ function renderDiagram() {
           </marker>
         </defs>
 
-        <!-- System Box -->
         <rect x="220" y="30" width="560" height="360" rx="12" fill="#11151e" stroke="#00a3e0" stroke-width="2" stroke-dasharray="6,4"/>
         <text x="240" y="60" fill="#00a3e0" font-size="16" font-weight="bold">Sistema BiblioTech (Límite del Sistema)</text>
 
-        <!-- Actor Lector -->
         <g transform="translate(60, 100)">
           <circle cx="20" cy="20" r="15" fill="#ff5a00"/>
           <line x1="20" y1="35" x2="20" y2="70" stroke="#ff5a00" stroke-width="3"/>
@@ -339,7 +337,6 @@ function renderDiagram() {
           <text x="-10" y="125" fill="#ffffff" font-size="13" font-weight="bold">Lector / Usuario</text>
         </g>
 
-        <!-- Actor Admin -->
         <g transform="translate(60, 270)">
           <circle cx="20" cy="20" r="15" fill="#8b5cf6"/>
           <line x1="20" y1="35" x2="20" y2="70" stroke="#8b5cf6" stroke-width="3"/>
@@ -349,7 +346,6 @@ function renderDiagram() {
           <text x="-15" y="125" fill="#ffffff" font-size="13" font-weight="bold">Administrador</text>
         </g>
 
-        <!-- Use Cases (Ovals) -->
         <g transform="translate(280, 90)">
           <ellipse cx="90" cy="30" rx="80" ry="25" fill="#00a3e0" fill-opacity="0.2" stroke="#00a3e0" stroke-width="2"/>
           <text x="35" y="35" fill="#ffffff" font-size="13" font-weight="bold">Login con Correo</text>
@@ -375,7 +371,6 @@ function renderDiagram() {
           <text x="30" y="35" fill="#ffffff" font-size="13" font-weight="bold">Gestionar Libros/BD</text>
         </g>
 
-        <!-- Connections -->
         <line x1="120" y1="140" x2="280" y2="120" stroke="#ff5a00" stroke-width="2"/>
         <line x1="120" y1="140" x2="540" y2="120" stroke="#ff5a00" stroke-width="2"/>
         <line x1="120" y1="140" x2="280" y2="240" stroke="#ff5a00" stroke-width="2"/>
@@ -384,48 +379,54 @@ function renderDiagram() {
       </svg>
     `;
   } else if (state.activeDiagram === 'erd') {
-    titleEl.textContent = 'Diagrama Entidad-Relación (ERD) - Base de Datos Persistente';
+    titleEl.textContent = 'Diagrama Entidad-Relación (ERD) - 8 Campos Exactos por Tabla';
     viewport.innerHTML = `
-      <svg width="850" height="420" viewBox="0 0 850 420" style="background:#181d28; border-radius:12px;">
-        <!-- Entity 1: USUARIO -->
-        <rect x="50" y="60" width="220" height="280" rx="8" fill="#11151e" stroke="#ff5a00" stroke-width="2"/>
-        <rect x="50" y="60" width="220" height="40" rx="8" fill="#ff5a00"/>
-        <text x="110" y="85" fill="#ffffff" font-size="15" font-weight="bold">USUARIOS</text>
-        <text x="70" y="130" fill="#ffffff" font-size="13">🔑 id (PK)</text>
-        <text x="70" y="160" fill="#00a3e0" font-size="13">✉️ email (LOGIN)</text>
-        <text x="70" y="190" fill="#ffffff" font-size="13">👤 nombre, apellido</text>
-        <text x="70" y="220" fill="#ffffff" font-size="13">🔒 password</text>
-        <text x="70" y="250" fill="#ffffff" font-size="13">🛡️ rol (Admin/Lector)</text>
-        <text x="70" y="280" fill="#ffffff" font-size="13">📞 telefono</text>
+      <svg width="880" height="430" viewBox="0 0 880 430" style="background:#181d28; border-radius:12px;">
+        <!-- Entity 1: USUARIOS -->
+        <rect x="30" y="40" width="240" height="340" rx="8" fill="#11151e" stroke="#ff5a00" stroke-width="2"/>
+        <rect x="30" y="40" width="240" height="40" rx="8" fill="#ff5a00"/>
+        <text x="95" y="65" fill="#ffffff" font-size="15" font-weight="bold">USUARIOS (8)</text>
+        <text x="45" y="110" fill="#ffffff" font-size="12">1. 🔑 id (PK AUTO_INC)</text>
+        <text x="45" y="140" fill="#ffffff" font-size="12">2. 👤 nombre</text>
+        <text x="45" y="170" fill="#ffffff" font-size="12">3. 👤 apellido</text>
+        <text x="45" y="200" fill="#00a3e0" font-size="12">4. ✉️ email (UNIQUE LOGIN)</text>
+        <text x="45" y="230" fill="#ffffff" font-size="12">5. 🆔 usuario</text>
+        <text x="45" y="260" fill="#ffffff" font-size="12">6. 🔒 password</text>
+        <text x="45" y="290" fill="#ffffff" font-size="12">7. 🛡️ rol (Admin/Lector)</text>
+        <text x="45" y="320" fill="#ffffff" font-size="12">8. 📞 telefono</text>
 
         <!-- Entity 2: PRESTAMOS -->
-        <rect x="315" y="60" width="220" height="280" rx="8" fill="#11151e" stroke="#00a3e0" stroke-width="2"/>
-        <rect x="315" y="60" width="220" height="40" rx="8" fill="#00a3e0"/>
-        <text x="370" y="85" fill="#ffffff" font-size="15" font-weight="bold">PRESTAMOS</text>
-        <text x="335" y="130" fill="#ffffff" font-size="13">🔑 id (PK)</text>
-        <text x="335" y="160" fill="#ff5a00" font-size="13">🔗 userId (FK)</text>
-        <text x="335" y="190" fill="#10b981" font-size="13">🔗 bookId (FK)</text>
-        <text x="335" y="220" fill="#ffffff" font-size="13">📅 fechaPrestamo</text>
-        <text x="335" y="250" fill="#ffffff" font-size="13">⏱️ fechaDevolucion</text>
-        <text x="335" y="280" fill="#ffffff" font-size="13">🏷️ estado (Activo/Devuelto)</text>
+        <rect x="320" y="40" width="240" height="340" rx="8" fill="#11151e" stroke="#00a3e0" stroke-width="2"/>
+        <rect x="320" y="40" width="240" height="40" rx="8" fill="#00a3e0"/>
+        <text x="380" y="65" fill="#ffffff" font-size="15" font-weight="bold">PRESTAMOS (8)</text>
+        <text x="335" y="110" fill="#ffffff" font-size="12">1. 🔑 id (PK AUTO_INC)</text>
+        <text x="335" y="140" fill="#10b981" font-size="12">2. 🔗 libro_id (FK libros)</text>
+        <text x="335" y="170" fill="#ff5a00" font-size="12">3. 🔗 usuario_id (FK usuarios)</text>
+        <text x="335" y="200" fill="#ffffff" font-size="12">4. 📅 fecha_prestamo</text>
+        <text x="335" y="230" fill="#ffffff" font-size="12">5. ⏱️ fecha_devolucion_estimada</text>
+        <text x="335" y="260" fill="#ffffff" font-size="12">6. ✅ fecha_devolucion_real</text>
+        <text x="335" y="290" fill="#ffffff" font-size="12">7. 🏷️ estado (Activo/Devuelto)</text>
+        <text x="335" y="320" fill="#ffffff" font-size="12">8. 📝 notas</text>
 
         <!-- Entity 3: LIBROS -->
-        <rect x="580" y="60" width="220" height="280" rx="8" fill="#11151e" stroke="#10b981" stroke-width="2"/>
-        <rect x="580" y="60" width="220" height="40" rx="8" fill="#10b981"/>
-        <text x="650" y="85" fill="#ffffff" font-size="15" font-weight="bold">LIBROS</text>
-        <text x="600" y="130" fill="#ffffff" font-size="13">🔑 id (PK)</text>
-        <text x="600" y="160" fill="#ffffff" font-size="13">📚 titulo, autor</text>
-        <text x="600" y="190" fill="#ffffff" font-size="13">🏷️ categoria, isbn</text>
-        <text x="600" y="220" fill="#ffffff" font-size="13">🔢 ejemplaresTotales</text>
-        <text x="600" y="250" fill="#ffffff" font-size="13">✅ ejemplaresDisponibles</text>
-        <text x="600" y="280" fill="#ffffff" font-size="13">📍 ubicacion</text>
+        <rect x="610" y="40" width="240" height="340" rx="8" fill="#11151e" stroke="#10b981" stroke-width="2"/>
+        <rect x="610" y="40" width="240" height="40" rx="8" fill="#10b981"/>
+        <text x="680" y="65" fill="#ffffff" font-size="15" font-weight="bold">LIBROS (8)</text>
+        <text x="625" y="110" fill="#ffffff" font-size="12">1. 🔑 id (PK AUTO_INC)</text>
+        <text x="625" y="140" fill="#ffffff" font-size="12">2. 📚 titulo</text>
+        <text x="625" y="170" fill="#ffffff" font-size="12">3. ✍️ autor</text>
+        <text x="625" y="200" fill="#ffffff" font-size="12">4. 🏷️ categoria</text>
+        <text x="625" y="230" fill="#ffffff" font-size="12">5. 🔢 isbn</text>
+        <text x="625" y="260" fill="#ffffff" font-size="12">6. 📦 ejemplares_totales</text>
+        <text x="625" y="290" fill="#ffffff" font-size="12">7. ✅ ejemplares_disponibles</text>
+        <text x="625" y="320" fill="#ffffff" font-size="12">8. 📍 ubicacion</text>
 
-        <!-- Relationship Lines -->
-        <line x1="270" y1="160" x2="315" y2="160" stroke="#ff5a00" stroke-width="3"/>
-        <text x="280" y="150" fill="#ff5a00" font-size="12" font-weight="bold">1:N</text>
+        <!-- Relationships -->
+        <line x1="270" y1="170" x2="320" y2="170" stroke="#ff5a00" stroke-width="3"/>
+        <text x="282" y="160" fill="#ff5a00" font-size="12" font-weight="bold">1:N</text>
 
-        <line x1="535" y1="190" x2="580" y2="190" stroke="#10b981" stroke-width="3"/>
-        <text x="545" y="180" fill="#10b981" font-size="12" font-weight="bold">N:1</text>
+        <line x1="560" y1="140" x2="610" y2="140" stroke="#10b981" stroke-width="3"/>
+        <text x="572" y="130" fill="#10b981" font-size="12" font-weight="bold">N:1</text>
       </svg>
     `;
   } else {
