@@ -14,7 +14,7 @@ function readData() {
 const db = readData();
 
 console.log("==========================================================================");
-console.log(` 📊 CONSULTA DE ESTRUCTURA MARIADB / TABLA: '${tableName.toUpperCase()}' (EXACTAMENTE 8 CAMPOS)`);
+console.log(` 📊 CONSULTA DE ESTRUCTURA Y TABLA MARIADB: '${tableName.toUpperCase()}'`);
 console.log("==========================================================================");
 
 if (tableName === 'libros' || tableName === 'libro') {
@@ -69,35 +69,33 @@ if (tableName === 'libros' || tableName === 'libro') {
   }
 
 } else if (tableName === 'prestamos' || tableName === 'prestamo') {
-  console.log("\n📐 ESTRUCTURA OFICIAL EN MARIADB (DESCRIBE `prestamos` - 8 CAMPOS):");
+  console.log("\n📐 ESTRUCTURA OFICIAL EN MARIADB (DESCRIBE `prestamos` - EXACTAMENTE 6 CAMPOS):");
   console.table([
     { Campo: 'id', Tipo: 'INT AUTO_INCREMENT', Clave: 'PRIMARY KEY', Nulo: 'NO' },
-    { Campo: 'libro_id', Tipo: 'INT', Clave: 'FOREIGN KEY', Nulo: 'NO' },
-    { Campo: 'usuario_id', Tipo: 'INT', Clave: 'FOREIGN KEY', Nulo: 'NO' },
+    { Campo: 'usuario_id', Tipo: 'INT', Clave: 'FOREIGN KEY (usuarios.id)', Nulo: 'NO' },
+    { Campo: 'libro_id', Tipo: 'INT', Clave: 'FOREIGN KEY (libros.id)', Nulo: 'NO' },
     { Campo: 'fecha_prestamo', Tipo: 'DATE', Clave: '', Nulo: 'NO' },
-    { Campo: 'fecha_devolucion_estimada', Tipo: 'DATE', Clave: '', Nulo: 'NO' },
-    { Campo: 'fecha_devolucion_real', Tipo: 'DATE', Clave: '', Nulo: 'YES' },
-    { Campo: 'estado', Tipo: "ENUM('Activo', 'Devuelto', 'Vencido')", Clave: '', Nulo: 'NO' },
-    { Campo: 'notas', Tipo: 'TEXT', Clave: '', Nulo: 'YES' }
+    { Campo: 'fecha_devolucion', Tipo: 'DATE', Clave: '', Nulo: 'NO' },
+    { Campo: 'estado', Tipo: "ENUM('Activo', 'Devuelto', 'Vencido')", Clave: '', Nulo: 'NO' }
   ]);
 
   if (db && db.loans) {
     console.log("\n📑 REGISTROS ACTUALES GUARDADOS (SELECT * FROM `prestamos`):");
     console.table(db.loans.map(l => ({
       ID: l.id,
-      Libro: l.bookTitulo,
       Lector_Correo: l.usuarioNombre,
-      Préstamo: l.fechaPrestamo,
-      Límite: l.fechaDevolucionEstimada,
+      Libro: l.bookTitulo,
+      Fecha_Préstamo: l.fechaPrestamo,
+      Fecha_Devolución: l.fechaDevolucionEstimada,
       Estado: l.estado
     })));
   }
 
 } else {
-  console.log("Tablas disponibles (cada una con exactamente 8 campos):");
-  console.log(" - libros");
-  console.log(" - usuarios");
-  console.log(" - prestamos");
+  console.log("Tablas disponibles:");
+  console.log(" - libros (8 campos)");
+  console.log(" - usuarios (8 campos)");
+  console.log(" - prestamos (6 campos exactos)");
 }
 
 console.log("==========================================================================");

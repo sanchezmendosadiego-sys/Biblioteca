@@ -1,7 +1,10 @@
 <?php
 /**
  * conexion_mariadb.php
- * Conexión a MariaDB / MySQL con esquema oficial de 8 CAMPOS EXACTOS por tabla.
+ * Conexión a MariaDB / MySQL con esquema oficial:
+ * - USUARIOS: 8 campos
+ * - LIBROS: 8 campos
+ * - PRESTAMOS: 6 campos exactos
  */
 
 $db_host = "localhost";
@@ -32,7 +35,7 @@ try {
 }
 
 function crearEstructuraTablasMariaDB($pdo) {
-    // 1. Tabla USUARIOS (8 campos exactos)
+    // 1. Tabla USUARIOS (8 campos)
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS `usuarios` (
             `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -46,7 +49,7 @@ function crearEstructuraTablasMariaDB($pdo) {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
     ");
 
-    // 2. Tabla LIBROS (8 campos exactos)
+    // 2. Tabla LIBROS (8 campos)
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS `libros` (
             `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -60,19 +63,17 @@ function crearEstructuraTablasMariaDB($pdo) {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
     ");
 
-    // 3. Tabla PRESTAMOS (8 campos exactos)
+    // 3. Tabla PRESTAMOS (6 campos exactos)
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS `prestamos` (
             `id` INT AUTO_INCREMENT PRIMARY KEY,
-            `libro_id` INT NOT NULL,
             `usuario_id` INT NOT NULL,
+            `libro_id` INT NOT NULL,
             `fecha_prestamo` DATE NOT NULL,
-            `fecha_devolucion_estimada` DATE NOT NULL,
-            `fecha_devolucion_real` DATE NULL,
+            `fecha_devolucion` DATE NOT NULL,
             `estado` ENUM('Activo', 'Devuelto', 'Vencido') DEFAULT 'Activo',
-            `notas` TEXT NULL,
-            CONSTRAINT `fk_prestamo_libro` FOREIGN KEY (`libro_id`) REFERENCES `libros`(`id`) ON DELETE CASCADE,
-            CONSTRAINT `fk_prestamo_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios`(`id`) ON DELETE CASCADE
+            CONSTRAINT `fk_prestamo_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios`(`id`) ON DELETE CASCADE,
+            CONSTRAINT `fk_prestamo_libro` FOREIGN KEY (`libro_id`) REFERENCES `libros`(`id`) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
     ");
 

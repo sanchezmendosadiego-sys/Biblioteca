@@ -157,7 +157,6 @@ function renderDashboard() {
   document.getElementById('statPrestamosActivos').textContent = state.stats.librosPrestados || 0;
   document.getElementById('statTotalLectores').textContent = state.stats.totalUsuarios || 0;
 
-  // Recent books
   const recentGrid = document.getElementById('recentBooksGrid');
   const recent = state.books.slice(-4).reverse();
   recentGrid.innerHTML = recent.map(b => `
@@ -168,7 +167,6 @@ function renderDashboard() {
     </div>
   `).join('');
 
-  // Active loans
   const tableBody = document.getElementById('dashboardLoansTable');
   const activeLoans = state.loans.slice(-5).reverse();
   tableBody.innerHTML = activeLoans.map(l => `
@@ -200,7 +198,6 @@ function filterAndRenderCatalog(query = '') {
     return matchQuery && matchCategory && matchAvail;
   });
 
-  // Grid View
   const gridEl = document.getElementById('catalogGrid');
   gridEl.innerHTML = filtered.map(b => `
     <div class="book-card">
@@ -225,7 +222,6 @@ function filterAndRenderCatalog(query = '') {
     </div>
   `).join('');
 
-  // Table View
   const tableBody = document.getElementById('catalogTableBody');
   tableBody.innerHTML = filtered.map(b => `
     <tr>
@@ -379,54 +375,52 @@ function renderDiagram() {
       </svg>
     `;
   } else if (state.activeDiagram === 'erd') {
-    titleEl.textContent = 'Diagrama Entidad-Relación (ERD) - 8 Campos Exactos por Tabla';
+    titleEl.textContent = 'Diagrama Entidad-Relación (ERD) - 8 Campos Usuarios/Libros | 6 Campos Préstamos';
     viewport.innerHTML = `
       <svg width="880" height="430" viewBox="0 0 880 430" style="background:#181d28; border-radius:12px;">
-        <!-- Entity 1: USUARIOS -->
+        <!-- Entity 1: USUARIOS (8) -->
         <rect x="30" y="40" width="240" height="340" rx="8" fill="#11151e" stroke="#ff5a00" stroke-width="2"/>
         <rect x="30" y="40" width="240" height="40" rx="8" fill="#ff5a00"/>
         <text x="95" y="65" fill="#ffffff" font-size="15" font-weight="bold">USUARIOS (8)</text>
-        <text x="45" y="110" fill="#ffffff" font-size="12">1. 🔑 id (PK AUTO_INC)</text>
-        <text x="45" y="140" fill="#ffffff" font-size="12">2. 👤 nombre</text>
-        <text x="45" y="170" fill="#ffffff" font-size="12">3. 👤 apellido</text>
-        <text x="45" y="200" fill="#00a3e0" font-size="12">4. ✉️ email (UNIQUE LOGIN)</text>
+        <text x="45" y="110" fill="#ffffff" font-size="12">1. 🔑 id (PK)</text>
+        <text x="45" y="140" fill="#00a3e0" font-size="12">2. ✉️ email (LOGIN)</text>
+        <text x="45" y="170" fill="#ffffff" font-size="12">3. 👤 nombre</text>
+        <text x="45" y="200" fill="#ffffff" font-size="12">4. 👤 apellido</text>
         <text x="45" y="230" fill="#ffffff" font-size="12">5. 🆔 usuario</text>
         <text x="45" y="260" fill="#ffffff" font-size="12">6. 🔒 password</text>
         <text x="45" y="290" fill="#ffffff" font-size="12">7. 🛡️ rol (Admin/Lector)</text>
         <text x="45" y="320" fill="#ffffff" font-size="12">8. 📞 telefono</text>
 
-        <!-- Entity 2: PRESTAMOS -->
-        <rect x="320" y="40" width="240" height="340" rx="8" fill="#11151e" stroke="#00a3e0" stroke-width="2"/>
+        <!-- Entity 2: PRESTAMOS (6 CAMPOS EXACTOS) -->
+        <rect x="320" y="40" width="240" height="280" rx="8" fill="#11151e" stroke="#00a3e0" stroke-width="2"/>
         <rect x="320" y="40" width="240" height="40" rx="8" fill="#00a3e0"/>
-        <text x="380" y="65" fill="#ffffff" font-size="15" font-weight="bold">PRESTAMOS (8)</text>
-        <text x="335" y="110" fill="#ffffff" font-size="12">1. 🔑 id (PK AUTO_INC)</text>
-        <text x="335" y="140" fill="#10b981" font-size="12">2. 🔗 libro_id (FK libros)</text>
-        <text x="335" y="170" fill="#ff5a00" font-size="12">3. 🔗 usuario_id (FK usuarios)</text>
-        <text x="335" y="200" fill="#ffffff" font-size="12">4. 📅 fecha_prestamo</text>
-        <text x="335" y="230" fill="#ffffff" font-size="12">5. ⏱️ fecha_devolucion_estimada</text>
-        <text x="335" y="260" fill="#ffffff" font-size="12">6. ✅ fecha_devolucion_real</text>
-        <text x="335" y="290" fill="#ffffff" font-size="12">7. 🏷️ estado (Activo/Devuelto)</text>
-        <text x="335" y="320" fill="#ffffff" font-size="12">8. 📝 notas</text>
+        <text x="375" y="65" fill="#ffffff" font-size="15" font-weight="bold">PRESTAMOS (6)</text>
+        <text x="335" y="110" fill="#ffffff" font-size="12">1. 🔑 id (PK)</text>
+        <text x="335" y="145" fill="#ff5a00" font-size="12">2. 🔗 userId (FK usuarios)</text>
+        <text x="335" y="180" fill="#10b981" font-size="12">3. 🔗 bookId (FK libros)</text>
+        <text x="335" y="215" fill="#ffffff" font-size="12">4. 📅 fechaPrestamo</text>
+        <text x="335" y="250" fill="#ffffff" font-size="12">5. ⏱️ fechaDevolucion</text>
+        <text x="335" y="285" fill="#ffffff" font-size="12">6. 🏷️ estado (Activo/Devuelto)</text>
 
-        <!-- Entity 3: LIBROS -->
+        <!-- Entity 3: LIBROS (8) -->
         <rect x="610" y="40" width="240" height="340" rx="8" fill="#11151e" stroke="#10b981" stroke-width="2"/>
         <rect x="610" y="40" width="240" height="40" rx="8" fill="#10b981"/>
         <text x="680" y="65" fill="#ffffff" font-size="15" font-weight="bold">LIBROS (8)</text>
-        <text x="625" y="110" fill="#ffffff" font-size="12">1. 🔑 id (PK AUTO_INC)</text>
+        <text x="625" y="110" fill="#ffffff" font-size="12">1. 🔑 id (PK)</text>
         <text x="625" y="140" fill="#ffffff" font-size="12">2. 📚 titulo</text>
         <text x="625" y="170" fill="#ffffff" font-size="12">3. ✍️ autor</text>
         <text x="625" y="200" fill="#ffffff" font-size="12">4. 🏷️ categoria</text>
         <text x="625" y="230" fill="#ffffff" font-size="12">5. 🔢 isbn</text>
-        <text x="625" y="260" fill="#ffffff" font-size="12">6. 📦 ejemplares_totales</text>
-        <text x="625" y="290" fill="#ffffff" font-size="12">7. ✅ ejemplares_disponibles</text>
+        <text x="625" y="260" fill="#ffffff" font-size="12">6. 📦 ejemplaresTotales</text>
+        <text x="625" y="290" fill="#ffffff" font-size="12">7. ✅ ejemplaresDisponibles</text>
         <text x="625" y="320" fill="#ffffff" font-size="12">8. 📍 ubicacion</text>
 
         <!-- Relationships -->
-        <line x1="270" y1="170" x2="320" y2="170" stroke="#ff5a00" stroke-width="3"/>
-        <text x="282" y="160" fill="#ff5a00" font-size="12" font-weight="bold">1:N</text>
+        <line x1="270" y1="140" x2="320" y2="140" stroke="#ff5a00" stroke-width="3"/>
+        <text x="282" y="130" fill="#ff5a00" font-size="12" font-weight="bold">1:N</text>
 
-        <line x1="560" y1="140" x2="610" y2="140" stroke="#10b981" stroke-width="3"/>
-        <text x="572" y="130" fill="#10b981" font-size="12" font-weight="bold">N:1</text>
+        <line x1="560" y1="180" x2="610" y2="180" stroke="#10b981" stroke-width="3"/>
+        <text x="572" y="170" fill="#10b981" font-size="12" font-weight="bold">N:1</text>
       </svg>
     `;
   } else {
