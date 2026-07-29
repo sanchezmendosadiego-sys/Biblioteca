@@ -52,14 +52,14 @@
       </nav>
 
       <div class="sidebar-footer">
-        <div class="user-card" id="userProfileCard">
+        <div class="user-card" id="userProfileCard" onclick="openModal('loginModal')" style="cursor:pointer;" title="Haz clic para Cambiar de Usuario o Iniciar Sesión">
           <div class="user-avatar" id="userAvatar">A</div>
           <div class="user-info">
             <span class="user-name" id="userName">admin@biblioteca.com</span>
             <span class="user-role" id="userRole">Administrador</span>
           </div>
-          <button class="btn-icon" id="btnLogout" title="Cerrar Sesión">
-            <i class="fa-solid fa-right-from-bracket"></i>
+          <button class="btn-icon" id="btnLogout" title="Cambiar de Usuario">
+            <i class="fa-solid fa-user-gear"></i>
           </button>
         </div>
       </div>
@@ -74,6 +74,9 @@
           <input type="text" id="globalSearchInput" placeholder="Buscar por título, autor, correo o ISBN...">
         </div>
         <div class="header-actions">
+          <button class="btn btn-secondary" onclick="openModal('loginModal')">
+            <i class="fa-solid fa-user"></i> Iniciar Sesión / Registro
+          </button>
           <button class="btn btn-secondary" id="btnQuickLoan">
             <i class="fa-solid fa-plus"></i> Nuevo Préstamo
           </button>
@@ -91,7 +94,7 @@
           <div class="welcome-banner">
             <div class="welcome-text">
               <h1>¡Bienvenido a <span class="gradient-text">BiblioTech</span>!</h1>
-              <p>Sistema completo de gestión con autenticación por correo, préstamos persistentes y arquitectura Lucidchart.</p>
+              <p>Sistema completo de gestión con inicio de sesión por correo, 12+ libros cargados y arquitectura Lucidchart.</p>
             </div>
             <div class="welcome-badge">
               <i class="fa-solid fa-database"></i> Datos Persistidos
@@ -135,7 +138,7 @@
             <!-- Destacados / Recientes -->
             <div class="glass-card">
               <div class="card-header">
-                <h3><i class="fa-solid fa-star text-gold"></i> Libros Recientes en Catálogo</h3>
+                <h3><i class="fa-solid fa-star text-gold"></i> Libros Destacados en Catálogo</h3>
                 <button class="btn-link" onclick="switchTab('catalogo')">Ver todos</button>
               </div>
               <div class="recent-books-grid" id="recentBooksGrid">
@@ -172,8 +175,8 @@
         <section id="tab-catalogo" class="tab-content">
           <div class="section-header">
             <div>
-              <h2>Catálogo de Libros</h2>
-              <p>Administra el inventario de la biblioteca digital.</p>
+              <h2>Catálogo Ampliado de Libros</h2>
+              <p>Explora y administra el inventario completo de la biblioteca digital.</p>
             </div>
             <button class="btn btn-primary" onclick="openBookModal()">
               <i class="fa-solid fa-plus"></i> Registrar Libro
@@ -190,6 +193,7 @@
                 <option value="Clásico">Clásico</option>
                 <option value="Fábula">Fábula</option>
                 <option value="Ciencia Ficción">Ciencia Ficción</option>
+                <option value="Fantasía">Fantasía</option>
                 <option value="Historia">Historia</option>
                 <option value="Tecnología">Tecnología</option>
               </select>
@@ -270,8 +274,8 @@
         <section id="tab-usuarios" class="tab-content">
           <div class="section-header">
             <div>
-              <h2>Directorio de Usuarios y Correos Registrados</h2>
-              <p>Control persistente de cuentas de acceso, correos electrónicos y roles.</p>
+              <h2>Directorio de Cuentas y Correos Registrados</h2>
+              <p>Control persistente de usuarios, correos electrónicos y contraseñas de acceso.</p>
             </div>
             <div class="flex-gap">
               <button class="btn btn-secondary" onclick="exportDataJSON()">
@@ -322,7 +326,7 @@
             </div>
           </div>
 
-          <!-- Canvas / Lucidchart Canvas Container -->
+          <!-- Canvas Container -->
           <div class="lucid-canvas-wrapper glass-card">
             <div class="lucid-toolbar">
               <div class="lucid-brand">
@@ -345,7 +349,7 @@
             <div class="lucid-legend">
               <span class="leg-item"><span class="leg-dot orange"></span> Actores / Usuarios</span>
               <span class="leg-item"><span class="leg-dot blue"></span> Casos de Uso / Procesos</span>
-              <span class="leg-item"><span class="leg-dot green"></span> Persistencia (JSON DB)</span>
+              <span class="leg-item"><span class="leg-dot green"></span> Persistencia (JSON / MySQL)</span>
             </div>
           </div>
         </section>
@@ -435,6 +439,7 @@
               <option value="Clásico">Clásico</option>
               <option value="Fábula">Fábula</option>
               <option value="Ciencia Ficción">Ciencia Ficción</option>
+              <option value="Fantasía">Fantasía</option>
               <option value="Historia">Historia</option>
               <option value="Tecnología">Tecnología</option>
             </select>
@@ -557,7 +562,7 @@
     </div>
   </div>
 
-  <!-- Modal Login / Registro -->
+  <!-- Modal Login / Registro por Correo -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-content glass-card modal-sm">
       <div class="text-center mb-4">
@@ -568,13 +573,19 @@
 
       <!-- Quick Demo Users Pills -->
       <div class="demo-users-bar">
-        <small>Cuentas rápidas de prueba:</small>
-        <div class="flex-gap-sm mt-1">
-          <button type="button" class="chip chip-admin" onclick="fillLogin('admin@biblioteca.com', '123')">
-            <i class="fa-solid fa-user-shield"></i> Admin
+        <small>Cuentas registradas de ejemplo:</small>
+        <div class="flex-gap-sm mt-1" style="flex-wrap:wrap;">
+          <button type="button" class="chip" onclick="fillLogin('admin@biblioteca.com', '123')">
+            <i class="fa-solid fa-user-shield"></i> admin@biblioteca.com
           </button>
-          <button type="button" class="chip chip-user" onclick="fillLogin('maria.g@gmail.com', '123')">
-            <i class="fa-solid fa-user"></i> María
+          <button type="button" class="chip" onclick="fillLogin('maria.g@gmail.com', '123')">
+            <i class="fa-solid fa-user"></i> maria.g@gmail.com
+          </button>
+          <button type="button" class="chip" onclick="fillLogin('carlos.l@gmail.com', '123')">
+            <i class="fa-solid fa-user"></i> carlos.l@gmail.com
+          </button>
+          <button type="button" class="chip" onclick="fillLogin('laura.sanchez@gmail.com', '123')">
+            <i class="fa-solid fa-user"></i> laura.sanchez@gmail.com
           </button>
         </div>
       </div>
@@ -591,6 +602,12 @@
         <button type="submit" class="btn btn-primary btn-block mt-3">
           <i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesión
         </button>
+        
+        <div class="text-center mt-3">
+          <button type="button" class="btn-link" onclick="closeModal('loginModal'); openUserModal();">
+            ¿No tienes cuenta? Registra tu correo aquí
+          </button>
+        </div>
       </form>
     </div>
   </div>

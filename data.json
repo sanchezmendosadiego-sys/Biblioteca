@@ -56,7 +56,7 @@
       "categoria": "Clásico",
       "anio": 1605,
       "ejemplaresTotales": 3,
-      "ejemplaresDisponibles": 2,
+      "ejemplaresDisponibles": 3,
       "ubicacion": "Estante B-04",
       "portada": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=400&q=80",
       "descripcion": "Las aventuras del hidalgo Don Quijote y su fiel escudero Sancho Panza."
@@ -69,7 +69,7 @@
       "categoria": "Fábula",
       "anio": 1943,
       "ejemplaresTotales": 8,
-      "ejemplaresDisponibles": 7,
+      "ejemplaresDisponibles": 6,
       "ubicacion": "Estante C-01",
       "portada": "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=400&q=80",
       "descripcion": "Cuento poético que viene acompañado de ilustraciones hechas con acuarelas."
@@ -86,6 +86,32 @@
       "ubicacion": "Estante A-08",
       "portada": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=400&q=80",
       "descripcion": "Novela distópica sobre la vigilancia masiva y el control gubernamental."
+    },
+    {
+      "id": "b_1785347844895",
+      "titulo": "NOTE CREAS TODO LO QUE PIENSAS ",
+      "autor": "JOSEPH NGUYEN",
+      "isbn": "N/A",
+      "categoria": "Novela",
+      "anio": 2024,
+      "ejemplaresTotales": 3,
+      "ejemplaresDisponibles": 2,
+      "ubicacion": "Estante General",
+      "portada": "https://www.bing.com/images/search?view=detailV2&ccid=tNuN5e2n&id=4A19B779977D08E75945D6C4BBFF6AE060D323B7&thid=OIP.tNuN5e2nJBCgojkLSn6nzwHaLW&mediaurl=https%3a%2f%2flibrosparatodos.net%2fwp-content%2fuploads%2fNo-te-creas-todo-lo-que-piensas.jpg&cdnurl=https%3a%2f%2fth.bing.com%2fth%2fid%2fR.b4db8de5eda72410a0a2390b4a7ea7cf%3frik%3dtyPTYOBq%252f7vE1g%26pid%3dImgRaw%26r%3d0&exph=1840&expw=1200&q=no+te+creas+todo+lo+que+piensas+libro+pdf&FORM=IRPRST&ck=18D97790C950602484A37ABABD746994&selectedIndex=1&itb=0",
+      "descripcion": ""
+    },
+    {
+      "id": "b_1785348623309",
+      "titulo": "HITLER",
+      "autor": "DIEGO ",
+      "isbn": "N/A",
+      "categoria": "Historia",
+      "anio": 1988,
+      "ejemplaresTotales": 3,
+      "ejemplaresDisponibles": 2,
+      "ubicacion": "Estante General",
+      "portada": "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=400&q=80",
+      "descripcion": ""
     }
   ],
   "loans": [
@@ -109,9 +135,45 @@
       "usuarioNombre": "Carlos López",
       "fechaPrestamo": "2026-07-10",
       "fechaDevolucionEstimada": "2026-07-24",
-      "fechaDevolucionReal": null,
-      "estado": "Vencido",
+      "fechaDevolucionReal": "2026-07-29",
+      "estado": "Devuelto",
       "notas": "Notificación enviada"
+    },
+    {
+      "id": "p_1785347662335",
+      "bookId": "b3",
+      "userId": "u3",
+      "bookTitulo": "El Principito",
+      "usuarioNombre": "Carlos López (carlos.l@gmail.com)",
+      "fechaPrestamo": "2026-07-29",
+      "fechaDevolucionEstimada": "2026-08-05",
+      "fechaDevolucionReal": null,
+      "estado": "Activo",
+      "notas": ""
+    },
+    {
+      "id": "p_1785347863880",
+      "bookId": "b_1785347844895",
+      "userId": "u2",
+      "bookTitulo": "NOTE CREAS TODO LO QUE PIENSAS ",
+      "usuarioNombre": "María González (maria.g@gmail.com)",
+      "fechaPrestamo": "2026-07-29",
+      "fechaDevolucionEstimada": "2026-08-05",
+      "fechaDevolucionReal": null,
+      "estado": "Activo",
+      "notas": ""
+    },
+    {
+      "id": "p_1785348643701",
+      "bookId": "b_1785348623309",
+      "userId": "u1",
+      "bookTitulo": "HITLER",
+      "usuarioNombre": "Administrador Principal (admin@biblioteca.com)",
+      "fechaPrestamo": "2026-07-29",
+      "fechaDevolucionEstimada": "2026-08-02",
+      "fechaDevolucionReal": null,
+      "estado": "Activo",
+      "notas": ""
     }
   ]
 }
